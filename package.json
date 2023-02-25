@@ -1,0 +1,9 @@
+{
+  "name": "employee-management",
+  "description": "A simple employee management API server example",
+  "scripts": {},
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {}
+}
