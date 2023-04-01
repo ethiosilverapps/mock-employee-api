@@ -20,6 +20,22 @@ let employee = [
   },
 ];
 
+let currentId = 2222;
+
+//You can use this endpoint to check the health status of the server
+app.get("/", async (req, res) => {
+  console.log("GET: / called");
+  res.status(200);
+  res.send("Health check OK.");
+});
+
+//This endpoint will server info
+app.get("/server-info", async (req, res) => {
+  console.log("GET: /server-info called");
+  res.status(200);
+  res.send({ availabilityZone: process.env.AZ_VAL, instanceId: process.env.INSTANCE_ID });
+});
+
 //This endpoint will return all employee data from our mock database
 app.get("/employees", async (req, res) => {
   console.log("GET: /employees called");
@@ -47,9 +63,9 @@ app.post("/employee", async (req, res) => {
     typeof lastName === "string" &&
     typeof jobTitle === "string"
   ) {
-    let id = Math.floor(Math.random() * 10000000000); //This is just to generate a mock employee ID
+    currentId += 1;
     employee.push({
-      id: id,
+      id: currentId,
       firstName: firstName,
       lastName: lastName,
       jobTitle: jobTitle,
