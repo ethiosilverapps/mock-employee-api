@@ -1,8 +1,11 @@
 const express = require("express");
 const app = express();
+const axios = require("axios");
 
 app.use(express.static("public"));
 app.use(express.json());
+
+const port = 8080;
 
 //Mock employee Database
 let employee = [
@@ -29,11 +32,14 @@ app.get("/", async (req, res) => {
   res.send("Health check OK.");
 });
 
-//This endpoint will server info
+//This endpoint will return server info
 app.get("/server-info", async (req, res) => {
   console.log("GET: /server-info called");
   res.status(200);
-  res.send({ availabilityZone: process.env.AZ_VAL, instanceId: process.env.INSTANCE_ID });
+  res.send({
+    availabilityZone: process.env.AZ_VAL,
+    instanceId: process.env.INSTANCE_ID,
+  });
 });
 
 //This endpoint will return all employee data from our mock database
@@ -109,4 +115,35 @@ app.delete("/employee", async (req, res) => {
   }
 });
 
-app.listen(8080, () => console.log("Node Server Listening on port 8080"));
+//This endpoint will be used for ping response
+app.get("/ping", async (req, res) => {
+  console.log("GET: /ping");
+
+  res.status(200);
+  res.send({
+    status: "HEALTHY",
+    availabilityZone: process.env.AZ_VAL,
+    instanceId: process.env.INSTANCE_ID,
+  });
+});
+
+//This endpoint will ping other mock api server
+app.get("/ping-other-instance", async (req, res) => {
+  console.log("GET: /ping-other-instance");
+
+  const { url } = req.body;
+
+  axios
+    .get(url + "/ping", {})
+    .then((response) => {
+      res.status(200);
+      res.send({
+        responseData: response.data,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+app.listen(port, () => console.log("Node Server Listening on port " + port));
