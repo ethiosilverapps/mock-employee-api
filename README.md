@@ -20,7 +20,7 @@ This API Server example is intended to be used as an instrument for AWS API Gate
 
 ## Running the server on EC2
 
-- Run the server starter script `./start_server.sh`
+- Run the server starter script `./start_server.sh` (You can pass `-s` flag to skip installing npm package)
 
 ## Available API Endpoints
 

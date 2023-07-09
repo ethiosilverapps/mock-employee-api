@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "Getting EC2 metadata"
+
 TOKEN=$(curl --max-time 3 -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600") 
 AZ_VAL=$(curl --max-time 3 -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/placement/availability-zone)
 INSTANCE_ID=$(curl --max-time 3 -H "X-aws-ec2-metadata-token: $TOKEN" -v http://169.254.169.254/latest/meta-data/instance-id)
@@ -22,5 +24,18 @@ if [ "$NODE_VERSION" = "" ]; then
     nvm install 16
 fi
 
-npm install
+SHOULD_RUN_NPM_INSTALL='true'
+
+while getopts s flag
+do 
+    case "${flag}" in 
+        s) SHOULD_RUN_NPM_INSTALL='false' ;;
+    esac
+done
+
+if [ "${SHOULD_RUN_NPM_INSTALL}" = 'true' ]; then
+    echo "Installing NPM packages"
+    npm install
+fi 
+
 node app.js
