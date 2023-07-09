@@ -29,4 +29,4 @@ This API Server example is intended to be used as an instrument for AWS API Gate
 - `DELETE: /employee?id={employee-id}` :- የሰራተኛ ID ከተሰጠው በኋላ የሰራተኛውን መረጃ ያስወግደዋል። / Given the employee id, it will delete that employee's data.
 - `GET: /server-info` :- It returns the EC2's Availability Zone it is running in and the EC2's instance-Id. (Note: Make sure you start your server with `./start_server.sh` to make this endpoint work.)
 - `GET: /ping` : It will be used for pinging(getting the status) this instance.
-- `GET: /ping-other-instance` : Given another instances's URL, it will ping(get the health status of) other instances.
+- `GET: /ping-other-instance` (with JSON body {url}) :- Given another instances's URL, it will ping(get the health status of) other instances.
